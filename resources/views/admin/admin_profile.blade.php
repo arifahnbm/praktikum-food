@@ -58,7 +58,7 @@
                 <!-- end card -->
 
                 <div class="card-body p-4">
-                    <form action="{{ route('admin.profile.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.profile.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
 
                     <div class="row">
@@ -92,7 +92,7 @@
                                     <input class="form-control" name="photo" type="file" id="image">
                                 </div>
                                 <div class="mb-3">
-                                    <img id="showImage" src="{{ (!empty($profileData->photo)) ? url('upload/admin_images'.$profileData->photo) : url('upload/no_image.jpg') }}" alt="" class="rounded-circle p-1 bg-primary" width="110">
+                                    <img id="showImage" src="{{ (!empty($profileData->photo)) ? url('upload/admin_images/'.$profileData->photo) : url('upload/no_image.jpg') }}" alt="" class="rounded-circle p-1 bg-primary" width="110">
                                 </div>
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary waves-effect waves-light">Save Changes</button>
