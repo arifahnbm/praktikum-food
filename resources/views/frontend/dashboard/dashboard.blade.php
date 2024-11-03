@@ -1,5 +1,6 @@
 @include('frontend.dashboard.header')
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
 @php
     $id = Auth::user()->id;
     $profileData = App\Models\User::find($id);   
@@ -20,7 +21,7 @@
 
     <div class="bg-white card mb-4 order-list shadow-sm">
         <div class="gold-members p-4">
-            <form action="{{ route('client.profile.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('profile.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
             <div class="row">
@@ -81,5 +82,43 @@
        </div>
     </div>
  </section>
+
+ <script type="text/javascript">
+    $(document).ready(function(){
+        $('#image').change(function(e){
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#showImage').attr('src',e.target.result);
+
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        })
+    })
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+ @if(Session::has('message'))
+ var type = "{{ Session::get('alert-type','info') }}"
+ switch(type){
+    case 'info':
+    toastr.info(" {{ Session::get('message') }} ");
+    break;
+
+    case 'success':
+    toastr.success(" {{ Session::get('message') }} ");
+    break;
+
+    case 'warning':
+    toastr.warning(" {{ Session::get('message') }} ");
+    break;
+
+    case 'error':
+    toastr.error(" {{ Session::get('message') }} ");
+    break; 
+ }
+ @endif 
+</script>
 
  @include('frontend.dashboard.footer')
