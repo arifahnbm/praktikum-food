@@ -128,6 +128,9 @@ class AdminController extends Controller
         $data->address = $request->address;
 
         $oldPhotoPath = $data->photo;
+        /*echo "<pre>";
+        print_r($request->photo);
+        echo "</pre>";*/
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
@@ -147,6 +150,7 @@ class AdminController extends Controller
         );
 
         return redirect()->back()->with($notification);
+        
     }
     //End method
 
