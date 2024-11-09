@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\CategoryController;
 
 
 // Route::get('/', function () {
@@ -59,3 +60,14 @@ Route::get('/client/register', [ClientController::class, 'ClientRegister'])->nam
 Route::post('/client/register/submit', [ClientController::class, 'ClientRegisterSubmit'])->name('client.register.submit');
 Route::post('/client/login_submit', [ClientController::class, 'ClientLoginSubmit'])->name('client.login_submit');
 Route::get('/client/logout', [ClientController::class, 'ClientLogout'])->name('client.logout');
+
+/// All Admin Category
+Route::middleware('admin')->group(function () {
+
+    Route::controller(CategoryController::class)->group(function(){
+        Route::get('/all/category', 'AllCategory')->name('all.category');
+        Route::get('/add/category', 'AddCategory')->name('add.category');
+    });
+    
+    
+}); //End Admin Middleware
