@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Client\RestaurantController;
+use App\Http\Controllers\Client\CouponController;
 
 
 // Route::get('/', function () {
@@ -115,6 +116,15 @@ Route::middleware('client')->group(function () {
         Route::post('/update/gallery', 'UpdateGallery')->name('gallery.update');
         Route::get('/delete/gallery/{id}', 'DeleteGallery')->name('delete.gallery');
         Route::get('/changeStatus', 'ChangeStatus');
+    });
+
+    Route::controller(CouponController::class)->group(function(){
+        Route::get('/all/coupon', 'AllCoupon')->name('all.coupon');
+        Route::get('/add/coupon', 'AddCoupon')->name('add.coupon');
+        Route::post('/store/coupon', 'StoreCoupon')->name('coupon.store');
+        Route::get('/edit/coupon/{id}', 'EditCoupon')->name('edit.coupon');
+        Route::post('/update/coupon', 'UpdateCoupon')->name('coupon.update');
+        Route::get('/delete/coupon/{id}', 'DeleteCoupon')->name('delete.coupon');
     });
 
 }); //End Client Middleware
