@@ -1,27 +1,4 @@
-<!doctype html>
-<html lang="en">
-   <head>
-      <!-- Required meta tags -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <meta name="description" content="Askbootstrap">
-      <meta name="author" content="Askbootstrap">
-      <title>User Dashboard - Online Food Ordering </title>
-      <!-- Favicon Icon -->
-      <link rel="icon" type="image/png" href="{{ asset('frontend/img/favicon.png') }}">
-      <!-- Bootstrap core CSS-->
-      <link href="{{ asset('frontend/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-      <!-- Font Awesome-->
-      <link href="{{ asset('frontend/vendor/fontawesome/css/all.min.css') }}" rel="stylesheet">
-      <!-- Font Awesome-->
-      <link href="{{ asset('frontend/vendor/icofont/icofont.min.css') }}" rel="stylesheet">
-      <!-- Select2 CSS-->
-      <link href="{{ asset('frontend/vendor/select2/css/select2.min.css') }}" rel="stylesheet">
-      <!-- Custom styles for this template-->
-      <link href="{{ asset('frontend/css/osahan.css') }}" rel="stylesheet">
-   </head>
-   <body>
-      
+
       <nav class="navbar navbar-expand-lg navbar-light bg-light osahan-nav shadow-sm">
          <div class="container">
             <a class="navbar-brand" href="{{ route('index') }}"><img alt="logo" src="{{ asset('frontend/img/logo.png') }}"></a>
@@ -43,9 +20,9 @@
                      
                   </li>
                   @php
-    $id = Auth::user()->id;
-    $profileData = App\Models\User::find($id);   
-@endphp
+                     $id = Auth::user()->id;
+                     $profileData = App\Models\User::find($id);   
+                  @endphp
                   <li class="nav-item dropdown">
                      <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      <img alt="Generic placeholder image" src="{{ (!empty($profileData->photo)) ? url('upload/user_images/'.$profileData->photo) : url('upload/no_image.jpg') }}" class="nav-osahan-pic rounded-pill"> My Account

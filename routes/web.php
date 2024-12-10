@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Client\RestaurantController;
 use App\Http\Controllers\Client\CouponController;
 use App\Http\Controllers\Admin\ManageController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\CartController;
 
 
 // Route::get('/', function () {
@@ -18,7 +20,7 @@ use App\Http\Controllers\Admin\ManageController;
 Route::get('/', [UserController::class, 'Index'])->name('index');
 
 Route::get('/dashboard', function () {
-    return view('frontend.dashboard.dashboard');
+    return view('frontend.dashboard.profile');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -26,7 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/logout', [UserController::class, 'UserLogout'])->name('user.logout');
     Route::get('/change/password', [UserController::class, 'ChangePassword'])->name('change.password');
     Route::post('/user/password/update', [UserController::class, 'UserPasswordUpdate'])->name('user.password.update');
-    
+
+    // Get Wishlist data for user 
+    Route::get('/all/wishlist', [HomeController::class, 'AllWishlist'])->name('all.wishlist');
+    Route::get('/remove/wishlist/{id}', [HomeController::class, 'RemoveWishlist'])->name('remove.wishlist');
 });
 
 require __DIR__.'/auth.php';
@@ -99,7 +104,14 @@ Route::middleware('admin')->group(function () {
         Route::get('/pending/restaurant', 'PendingRestaurant')->name('pending.restaurant');
         Route::get('/ClientchangeStatus', 'ClientChangeStatus');
         Route::get('/approve/restaurant', 'ApproveRestaurant')->name('approve.restaurant');
+    });
 
+    Route::controller(ManageController::class)->group(function(){
+        Route::get('/all/banner', 'AllBanner')->name('all.banner'); 
+        Route::post('/banner/store', 'BannerStore')->name('banner.store'); 
+        Route::get('/edit/banner/{id}', 'EditBanner');
+        Route::post('/banner/update', 'BannerUpdate')->name('banner.update'); 
+        Route::get('/delete/banner/{id}', 'DeleteBanner')->name('delete.banner'); 
     });
     
     
@@ -150,3 +162,13 @@ Route::middleware(['client','status'])->group(function () {
 
 ///This will be for all user
 Route::get('/changeStatus', [RestaurantController::class, 'ChangeStatus']);
+
+Route::controller(HomeController::class)->group(function(){
+    Route::get('/restaurant/details/{id}', 'RestaurantDetails')->name('res.details'); 
+    Route::post('/add-wish-list/{id}', 'AddWishList'); 
+});
+
+Route::controller(CartController::class)->group(function(){
+    Route::get('/add_to_cart/{id}', 'AddToCart')->name('add_to_cart');  
+    
+});
