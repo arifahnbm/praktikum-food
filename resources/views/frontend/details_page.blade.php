@@ -1,5 +1,7 @@
 @extends('frontend.dashboard.dashboard')
 @section('dashboard')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 
 @php
 $products = App\Models\Product::where('client_id',$client->id)->limit(3)->get();
@@ -397,12 +399,24 @@ $coupons = App\Models\Coupon::where('client_id',$client->id)->where('status','1'
                 </div>
              </div>
           </div>
+
+          @php
+            use Carbon\Carbon;
+            $coupon = App\Models\Coupon::where('client_id',$client->id)->where('validity','>=', Carbon::now()->format('Y-m-d'))->latest()->first();
+          @endphp
+
           <div class="col-md-4">
              <div class="pb-2">
              <div class="bg-white rounded shadow-sm text-white mb-4 p-4 clearfix restaurant-detailed-earn-pts card-icon-overlap">
-                <img class="img-fluid float-left mr-3" src="img/earn-score-icon.png">
+                <img class="img-fluid float-left mr-3" src="{{ asset('frontend/img/earn-score-icon.png') }}">
                 <h6 class="pt-0 text-primary mb-1 font-weight-bold">OFFER</h6>
-                <p class="mb-0">60% off on orders above $99 | Use coupon <span class="text-danger font-weight-bold">OSAHAN50</span></p>
+                {{-- <pre>{{ print_r(Session::get('coupon'), true) }}</pre> --}}
+                @if ($coupon == NULL)
+                <p class="mb-0">No Coupon is Available </p>
+                @else
+                <p class="mb-0">{{ $coupon->discount }}% off on orders above $99 | Use coupon <span class="text-danger font-weight-bold">{{ $coupon->coupon_name }}</span></p>
+                @endif
+
                 <div class="icon-overlap">
                    <i class="icofont-sale-discount"></i>
                 </div>
@@ -410,99 +424,91 @@ $coupons = App\Models\Coupon::where('client_id',$client->id)->where('status','1'
              </div>
              <div class="generator-bg rounded shadow-sm mb-4 p-4 osahan-cart-item">
                 <h5 class="mb-1 text-white">Your Order</h5>
-                <p class="mb-4 text-white">6 ITEMS</p>
+                <p class="mb-4 text-white">{{ count((array) session('cart')) }} ITEMS</p>
                 <div class="bg-white rounded shadow-sm mb-2">
-                   <div class="gold-members p-2 border-bottom">
-                      <p class="text-gray mb-0 float-right ml-2">$314</p>
-                      <span class="count-number float-right">
-                      <button class="btn btn-outline-secondary  btn-sm left dec"> <i class="icofont-minus"></i> </button>
-                      <input class="count-number-input" type="text" value="1" readonly="">
-                      <button class="btn btn-outline-secondary btn-sm right inc"> <i class="icofont-plus"></i> </button>
-                      </span>
-                      <div class="media">
-                         <div class="mr-2"><i class="icofont-ui-press text-danger food-item"></i></div>
-                         <div class="media-body">
-                            <p class="mt-1 mb-0 text-black">Chicken Tikka Sub</p>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="gold-members p-2 border-bottom">
-                      <p class="text-gray mb-0 float-right ml-2">$260</p>
-                      <span class="count-number float-right">
-                      <button class="btn btn-outline-secondary  btn-sm left dec"> <i class="icofont-minus"></i> </button>
-                      <input class="count-number-input" type="text" value="1" readonly="">
-                      <button class="btn btn-outline-secondary btn-sm right inc"> <i class="icofont-plus"></i> </button>
-                      </span>
-                      <div class="media">
-                         <div class="mr-2"><i class="icofont-ui-press text-success food-item"></i></div>
-                         <div class="media-body">
-                            <p class="mt-1 mb-0 text-black">Cheese corn Roll</p>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="gold-members p-2 border-bottom">
-                      <p class="text-gray mb-0 float-right ml-2">$260</p>
-                      <span class="count-number float-right">
-                      <button class="btn btn-outline-secondary  btn-sm left dec"> <i class="icofont-minus"></i> </button>
-                      <input class="count-number-input" type="text" value="1" readonly="">
-                      <button class="btn btn-outline-secondary btn-sm right inc"> <i class="icofont-plus"></i> </button>
-                      </span>
-                      <div class="media">
-                         <div class="mr-2"><i class="icofont-ui-press text-success food-item"></i></div>
-                         <div class="media-body">
-                            <p class="mt-1 mb-0 text-black">Cheese corn Roll</p>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="gold-members p-2 border-bottom">
-                      <p class="text-gray mb-0 float-right ml-2">$056</p>
-                      <span class="count-number float-right">
-                      <button class="btn btn-outline-secondary  btn-sm left dec"> <i class="icofont-minus"></i> </button>
-                      <input class="count-number-input" type="text" value="1" readonly="">
-                      <button class="btn btn-outline-secondary btn-sm right inc"> <i class="icofont-plus"></i> </button>
-                      </span>
-                      <div class="media">
-                         <div class="mr-2"><i class="icofont-ui-press text-success food-item"></i></div>
-                         <div class="media-body">
-                            <p class="mt-1 mb-0 text-black">Coke [330 ml]</p>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="gold-members p-2 border-bottom">
-                      <p class="text-gray mb-0 float-right ml-2">$652</p>
-                      <span class="count-number float-right">
-                      <button class="btn btn-outline-secondary  btn-sm left dec"> <i class="icofont-minus"></i> </button>
-                      <input class="count-number-input" type="text" value="1" readonly="">
-                      <button class="btn btn-outline-secondary btn-sm right inc"> <i class="icofont-plus"></i> </button>
-                      </span>
-                      <div class="media">
-                         <div class="mr-2"><i class="icofont-ui-press text-danger food-item"></i></div>
-                         <div class="media-body">
-                            <p class="mt-1 mb-0 text-black">Black Dal Makhani</p>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="gold-members p-2">
-                      <p class="text-gray mb-0 float-right ml-2">$122</p>
-                      <span class="count-number float-right">
-                      <button class="btn btn-outline-secondary  btn-sm left dec"> <i class="icofont-minus"></i> </button>
-                      <input class="count-number-input" type="text" value="1" readonly="">
-                      <button class="btn btn-outline-secondary btn-sm right inc"> <i class="icofont-plus"></i> </button>
-                      </span>
-                      <div class="media">
-                         <div class="mr-2"><i class="icofont-ui-press text-danger food-item"></i></div>
-                         <div class="media-body">
-                            <p class="mt-1 mb-0 text-black">Mixed Veg</p>
-                         </div>
-                      </div>
-                   </div>
+
+   @php $total = 0 @endphp
+   @if (session('cart'))
+   @foreach (session('cart') as $id => $details) 
+   @php
+      $total += $details['price'] * $details['quantity']
+   @endphp
+
+   <div class="gold-members p-2 border-bottom">
+      <p class="text-gray mb-0 float-right ml-2">${{ $details['price'] * $details['quantity'] }}</p>
+      <span class="count-number float-right">
+
+      <button class="btn btn-outline-secondary  btn-sm left dec" data-id="{{ $id }}"> <i class="icofont-minus"></i> </button>
+
+      <input class="count-number-input" type="text" value="{{  $details['quantity'] }}" readonly="">
+
+      <button class="btn btn-outline-secondary btn-sm right inc" data-id="{{ $id }}"> <i class="icofont-plus"></i> </button>
+      <button class="btn btn-outline-danger btn-sm right remove" data-id="{{ $id }}"> <i class="icofont-trash"></i> </button>
+
+      </span>
+      <div class="media">
+         <div class="mr-2"><img src="{{ asset($details['image']) }}"  width="25px" ></div>
+         <div class="media-body">
+            <p class="mt-1 mb-0 text-black">{{ $details['name'] }}</p>
+         </div>
+      </div>
+   </div>
+   @endforeach
+   @endif
+   
+   
                 </div>
+
+                @if (Session::has('coupon'))
+   <div class="mb-2 bg-white rounded p-2 clearfix">
+      <p class="mb-1">Item Total <span class="float-right text-dark">{{ count((array) session('cart')) }}</span></p>
+      
+      <p class="mb-1">Coupon Name <span class="float-right text-dark">{{ (session()->get('coupon')['coupon_name']) }} ( {{ (session()->get('coupon')['discount']) }} %) </span><a type="submit" onclick="couponRemove()"><i class="icofont-ui-delete float-right" style="color: red;"></i></a>
+      </p>
+
+       
+      <p class="mb-1 text-success">Total Discount 
+         <span class="float-right text-success">
+            @if (Session::has('coupon'))
+               ${{ $total - Session()->get('coupon')['discount_amount'] }}
+            @else
+            ${{ $total }}
+            @endif
+           
+         </span>
+      </p>
+      <hr />
+      <h6 class="font-weight-bold mb-0">TO PAY  <span class="float-right">
+      @if (Session::has('coupon'))
+      ${{ Session()->get('coupon')['discount_amount'] }}
+      @else
+      ${{ $total }}
+      @endif</span></h6>
+   </div>
+      
+   @else
+
                 <div class="mb-2 bg-white rounded p-2 clearfix">
-                   <img class="img-fluid float-left" src="img/wallet-icon.png">
-                   <h6 class="font-weight-bold text-right mb-2">Subtotal : <span class="text-danger">$456.4</span></h6>
-                   <p class="seven-color mb-1 text-right">Extra charges may apply</p>
-                   <p class="text-black mb-0 text-right">You have saved $955 on the bill</p>
-                </div>
+                  <div class="input-group input-group-sm mb-2">
+                     <input type="text" class="form-control" placeholder="Enter promo code" id="coupon_name">
+                     <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="button-addon2" onclick="ApplyCoupon()" ><i class="icofont-sale-discount"></i> APPLY</button>
+                     </div>
+                  </div> 
+               </div>
+               @endif
+<div class="mb-2 bg-white rounded p-2 clearfix">
+   <img class="img-fluid float-left" src="{{ asset('frontend/img/wallet-icon.png') }}">
+   <h6 class="font-weight-bold text-right mb-2">Subtotal : <span class="text-danger"> 
+      @if (Session::has('coupon'))
+      ${{ Session()->get('coupon')['discount_amount'] }}
+      @else
+      ${{ $total }}
+      @endif
+   </span></h6>
+   <p class="seven-color mb-1 text-right">Extra charges may apply</p>
+   
+</div>
                 <a href="checkout.html" class="btn btn-success btn-block btn-lg">Checkout <i class="icofont-long-arrow-right"></i></a>
              </div>
              
@@ -516,4 +522,81 @@ $coupons = App\Models\Coupon::where('client_id',$client->id)->where('status','1'
        </div>
     </div>
  </section>
+
+ <script>
+   $(document).ready(function() {
+
+      const Toast = Swal.mixin({
+         toast: true,
+         position: 'top-end',
+         showConfirmButton: false,
+         timer: 1500,
+         timerProgressBar: true,
+         didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+         }
+      });
+
+      $('.inc').on('click', function() {
+         var id = $(this).data('id');
+         var input = $(this).closest('span').find('input');
+         var newQuantity = parseInt(input.val()) + 1;
+         updateQuantity(id,newQuantity);
+      });
+      $('.dec').on('click', function() {
+         var id = $(this).data('id');
+         var input = $(this).closest('span').find('input');
+         var newQuantity = parseInt(input.val()) - 1;
+         if (newQuantity >= 1) {
+            updateQuantity(id,newQuantity);
+         } 
+      });
+      $('.remove').on('click', function() {
+         var id = $(this).data('id');
+         removeFromCart(id);
+      });
+
+      function updateQuantity(id,quantity){
+         $.ajax({
+            url: '{{ route("cart.updateQuantity") }}',
+            method: 'POST',
+            data: {
+               _token: '{{ csrf_token() }}',
+               id: id,
+               quantity: quantity
+            },
+            success: function(response){
+               Toast.fire({
+                  icon: 'success',
+                  title: 'Quantity Updated'
+               }).then(() => {
+                  location.reload();
+               });
+            }
+         })
+      }
+      function removeFromCart(id){
+         $.ajax({
+            url: '{{ route("cart.remove") }}',
+            method: 'POST',
+            data: {
+               _token: '{{ csrf_token() }}',
+               id: id
+            },
+            success: function(response){
+               Toast.fire({
+                  icon: 'success',
+                  title: 'Cart Remove Successfully'
+               }).then(() => {
+                  location.reload();
+               });
+            }
+         });
+      }
+
+   })
+ </script>
+ 
+
 @endsection

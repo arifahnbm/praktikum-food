@@ -6,6 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <meta name="description" content="Askbootstrap">
       <meta name="author" content="Askbootstrap">
+      <meta name="csrf-token" content="{{ csrf_token() }}" >
       <title>User Dashboard - Online Food Ordering </title>
       <!-- Favicon Icon -->
       <link rel="icon" type="image/png" href="{{ asset('frontend/img/favicon.png') }}">
@@ -43,7 +44,117 @@
  <!-- Custom scripts for all pages-->
  <script src="{{ asset('frontend/js/custom.js') }}"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+ <script>
+   @if(Session::has('message'))
+   var type = "{{ Session::get('alert-type','info') }}"
+   switch(type){
+      case 'info':
+      toastr.info(" {{ Session::get('message') }} ");
+      break;
+  
+      case 'success':
+      toastr.success(" {{ Session::get('message') }} ");
+      break;
+  
+      case 'warning':
+      toastr.warning(" {{ Session::get('message') }} ");
+      break;
+  
+      case 'error':
+      toastr.error(" {{ Session::get('message') }} ");
+      break; 
+   }
+   @endif 
+  </script>
+
+
+<script type="text/javascript">
+      $.ajaxSetup({
+         headers:{
+            'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+         }
+      });
+</script>
+
+{{-- //// Apply Coupon start /////////////// --}}
+<script>
+   function ApplyCoupon() {
+     var coupon_name = $('#coupon_name').val();
+     $.ajax({
+        type: "POST",
+        dataType: "json",
+        data:{coupon_name:coupon_name},
+        url:"/apply-coupon",
+        success:function(data){
+           
+            // Start Message 
+            const Toast = Swal.mixin({
+                 toast: true,
+                 position: 'top-end',
+                 
+                 showConfirmButton: false,
+                 timer: 3000 
+           })
+           if ($.isEmptyObject(data.error)) {
+                   
+                   Toast.fire({
+                   type: 'success',
+                   icon: 'success', 
+                   title: data.success, 
+                  });
+                  location.reload();
+           }else{
+              
+          Toast.fire({
+                   type: 'error',
+                   icon: 'error', 
+                   title: data.error, 
+                   })
+               }
+             // End Message 
+        }
+     })
+   }
+</script>
+
+<script>
+   function couponRemove(){
+      $.ajax({
+         type:"GET",
+         dataType:"json",
+         url:"/remove-coupon",
+         success:function(data){
+            // Start Message 
+            const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  
+                  showConfirmButton: false,
+                  timer: 3000 
+            })
+            if ($.isEmptyObject(data.error)) {
+                    
+                    Toast.fire({
+                    type: 'success',
+                    icon: 'success', 
+                    title: data.success, 
+                    });
+                    location.reload();
+            }else{
+               
+           Toast.fire({
+                    type: 'error',
+                    icon: 'error', 
+                    title: data.error, 
+                    })
+                }
+              // End Message 
+         }
+      })
+   }
+</script>
 
 </body>
 </html>
