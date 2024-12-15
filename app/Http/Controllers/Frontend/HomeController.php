@@ -21,7 +21,7 @@ class HomeController extends Controller
             return $menu->products->isNotEmpty();
         });
         $gallerys = Gallery::where('client_id',$id)->get();
-        $reviews = Review::where('client_id',$client->id)->get();
+        $reviews = Review::where('client_id',$client->id)->where('status',1)->get();
         $totalReviews = $reviews->count();
         $ratingSum = $reviews->sum('rating');
         $averageRating = $totalReviews > 0 ? $ratingSum / $totalReviews : 0;
